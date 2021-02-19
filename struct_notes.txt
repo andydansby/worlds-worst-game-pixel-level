@@ -1,0 +1,45 @@
+//player.x_displacement = starting position is beginning of tile
+//player.tile_X_position = starting tile for player
+//player.map_x = starting placement in large map
+struct player
+{
+    unsigned char tile_X_position;
+    // Displacement in tile (0-23) player position within tile
+
+	unsigned char x_displacement;
+	// Tile in X
+
+	unsigned char x_position;
+	// X position 0-255
+
+	unsigned char y_position;
+	// Y position 0-172
+
+	unsigned char sprite_number;
+	// used for player animation
+
+	unsigned char fuel;
+	//each loop needs to count down
+
+	unsigned char shields;
+	//each hit will lower shields
+
+	unsigned char param1;
+	// for something undefined for now, perhaps ship upgrades
+
+	unsigned int map_x;
+	//which pixel in the MAP 0-4080 the ship is flying through
+}player;
+
+
+
+    player.x_displacement = 0;
+	// starting position is beginning of tile
+	player.tile_X_position = playerStart;
+    player.x_position = 0;
+    player.y_position = 0;
+    player.sprite_number = 1;
+    player.fuel = 255;
+    player.shields = 127;
+    player.param1 = 0;
+	player.map_x = convert_tile_to_pixel(playerStart, 0); //start at tile X, offset 0
