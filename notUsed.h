@@ -94,8 +94,26 @@ void print_delete_index (void)
 	printf("number of entries %d\n", temp3);
 }
 
+//enemy_locations is large array
+void clean_enemy_array (void)
+{
+	for (temp1 = 0; temp1 < MAX_ENEMIES_ON_SCREEN; ++ temp1)
+	{
+		if (indexToDelete[temp1] != MAX_U_CHAR)
+		{
+			enemyToDelete = indexToDelete[temp1];
 
-
+			enemy_locations[enemyToDelete].x_displacement	= 0;
+			enemy_locations[enemyToDelete].tile_X_position = 0;
+			enemy_locations[enemyToDelete].y_position = 0;
+			enemy_locations[enemyToDelete].sprite_number = 0;
+			enemy_locations[enemyToDelete].movement = 0;
+			enemy_locations[enemyToDelete].energy = 0;
+			enemy_locations[enemyToDelete].param1 = 0;
+			enemy_locations[enemyToDelete].param2 = 0;
+		}
+	}
+}
 
 void Speed_test (void)
 {
@@ -149,6 +167,71 @@ unsigned char xorshift8(void) {
 }
 
 
+void search_enemy_array_que (void)
+{
+    //signed int s_int_temp1 = 0;
+
+	playerLow = player_x_desp_position;
+	playerHigh = player_x_desp_position + NEAR_PLAYER;//   NEAR_PLAYER = 2
+
+	if (playerHigh > MAX_PLAYER_POS)
+    {
+        //MAX_PLAYER_POS = 255
+		playerHigh = MAX_PLAYER_POS;
+    }
+
+    //printf("WTF1\n");
+    printf("playerLow = %d", playerLow);
+    printf("      ");
+    printf("playerHigh = %d\n", playerHigh);
+    printf("\n");
+
+
+    for (temp1 = 0; temp1 < MAX_ENEMIES_ON_SCREEN; temp1 ++)
+    //for (temp2 = 0; temp2 < MAX_ENEMIES_ON_SCREEN; temp2 ++)
+    {
+        temp3 = enemy_locations[temp2].x_desp;
+
+        if ((temp3 >= playerLow) && (temp3 <= playerHigh) )
+        {
+            temp2 = temp1 + playerLow;
+
+            printf("--------------------------\n");
+            printf("temp1 = %d", temp1);
+            printf("      ");
+            printf("temp2 = %d", temp2);
+            printf("      ");
+            printf("s_int_temp1 = %d", s_int_temp1);
+            printf("      ");
+            printf("temp3 = %d\n", temp3);
+            printf("--------------------------\n");
+
+
+
+            //if (temp3 == 0)
+            //{	temp1 ++;}//to bypass deleted baddies
+
+            printf("x_desp = %d\n", enemy_locations[temp2].x_desp);
+
+            printf("x = %d", enemy_locations[temp2].x);
+            printf("        ");
+            printf("y = %d\n", enemy_locations[temp2].y);
+
+            printf("sprnum = %d", enemy_locations[temp2].sprnum);
+            printf("        ");
+            printf("movement = %d", enemy_locations[temp2].movement);
+            printf("        ");
+            printf("energy = %d\n", enemy_locations[temp2].energy);
+
+            printf("param1 = %d", enemy_locations[temp2].param1);
+            printf("        ");
+            printf("param2 = %d\n", enemy_locations[temp2].param2);
+
+            //printf("--------------------------\n");
+        }
+
+    }
+}
 
 void search_near_to_player (void)
 {

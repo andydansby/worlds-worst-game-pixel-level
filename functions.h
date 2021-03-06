@@ -135,7 +135,6 @@ void fill_enemy_location_array (void)
 
 	pointerAddy ++;
 
-
 	for (temp1 = 0; temp1 < enemies_per_level; temp1 ++)
 	{
 	    enemy_locations[temp1].tile_X_position   = cpu_bpeek(pointerAddy);
@@ -166,229 +165,315 @@ printf("window.windowMax = %d   window.windowSize = %d\n", window.windowMax, win
 printf("------------------------------------------------------\n");
 */
 
-void printBaddyArray(void)
+
+// from wwg 12-12-2020 version
+
+
+void apple()
 {
-    for (temp6 = 0; temp6 < 10; temp6 ++)
+	//unsigned char enemyCounter = 0;
+	unsigned char baddyStart = 0;
+	unsigned char baddyEnd = 0;
+	unsigned char enemyLow = 0;
+	unsigned char enemyHigh = 0;
+
+	unsigned char windowStart = player.tile_X_position - 1;
+	unsigned char windowEnd = player.tile_X_position + NEAR_PLAYER;
+
+	unsigned char arrayScan = 0;
+
+	if (windowEnd > MAX_PLAYER_POS)
     {
-        //printf("FQU\n");
-        printf("%d    ", baddy[temp6].tile_X_position);
-        printf("%d    ", baddy[temp6].x_displacement);
-        printf("%d    ", baddy[temp6].y_position);
-        printf("%d    ", baddy[temp6].sprite_number);
-        printf("%d    ", baddy[temp6].movement);
-        printf("%d    ", baddy[temp6].energy);
-        printf("%d    ", baddy[temp6].param1);
-        printf("%d    ", baddy[temp6].param2);
-        //printf("\nFQU\n");
-        printf("\n");
+		windowEnd = MAX_PLAYER_POS;
     }
-}
 
-void copy_to_baddies (unsigned char arrayMembers)
-{
-    //temp1
-    baddy[arrayMembers].tile_X_position = enemy_locations[temp1].tile_X_position;
-    baddy[arrayMembers].x_displacement  = enemy_locations[temp1].x_displacement;
-    baddy[arrayMembers].y_position      = enemy_locations[temp1].y_position;
-    baddy[arrayMembers].sprite_number   = enemy_locations[temp1].sprite_number;
-    baddy[arrayMembers].movement        = enemy_locations[temp1].movement;
-    baddy[arrayMembers].energy          = enemy_locations[temp1].energy;
-    baddy[arrayMembers].param1          = enemy_locations[temp1].param1;
-    baddy[arrayMembers].param2          = enemy_locations[temp1].param2;
-}
-
-
-void printIt (void)
-{
-    //this is when the search area (temp1) finds an enemy on the same tile
-    printf("%d    ", enemy_locations[temp8].tile_X_position);
-    printf("%d    ", enemy_locations[temp8].x_displacement);
-    printf("%d    ", enemy_locations[temp8].y_position);
-    printf("%d    ", enemy_locations[temp8].sprite_number);
-    printf("%d    ", enemy_locations[temp8].movement);
-    printf("%d    ", enemy_locations[temp8].energy);
-    printf("%d    ", enemy_locations[temp8].param1);
-    printf("%d    ", enemy_locations[temp8].param2);
-    printf("\n");
-}
-
-
-//last one was search_window_for_baddies3
-void search_window_for_baddies (void)
-{
-    //sliding window algorithm
-    unsigned char number_of_baddies = 0;
-    unsigned char sliding_window = window.windowLow;
-    unsigned char baddy_tile_placement = 0;
-    unsigned char arrayMembers = 0;
-    unsigned char windowLow = window.windowLow;
-    unsigned char windowHigh = window.windowHigh;
-
-    printf("windowLow = %d  windowHigh = %d\n", window.windowLow, window.windowHigh);
-    while (arrayMembers < 10)//.no more than 10 members
+    //need to find enemy closest to player in window
+    for (temp1 = 0; temp1 < enemies_per_level; temp1++)
     {
-        for (temp1 = windowLow; temp1 < windowHigh; ++temp1)//move search bar through window
+        baddyStart = enemy_locations[temp1].tile_X_position;
+
+        if (baddyStart == windowStart)
         {
-            temp2 = enemy_locations[baddy_tile_placement].tile_X_position;
+            //found the lowest location in window
+            enemyLow = temp1;
+            break;
+        }
+    }
+
+    //find the enemy furthest to player in window
+    for (temp2 = temp1; temp2 < enemies_per_level; temp2++)
+    {
+        baddyEnd = enemy_locations[temp2].tile_X_position;
+
+        if (baddyEnd == windowEnd)
+        {
+            //found the highest location in window
+            enemyHigh = temp2;
+            break;
+        }
+    }
+
+    //show the ranges
+    printf ("enemyLow = %d\n", enemyLow);
+    printf ("enemyHigh = %d\n", enemyHigh);
+    printf ("baddyStart = %d\n", baddyStart);
+    printf ("baddyEnd = %d\n", baddyEnd);
+
+    arrayScan = enemyLow;
+
+    while (arrayScan <= enemyHigh)
+	{
+		baddyStart = enemy_locations[arrayScan].tile_X_position;
+
+		if(baddyStart >= baddyEnd)
+        {
+            //printf("GREATER THAN\n");
+            return;
+        }//seems working
+
+		if (baddyStart == 0)
+		{
+		    //printf("NOT EXISTING\n");
+		    //baddy deleted
+        }//to bypass deleted baddies
+
+		printf("arrayScan=%d   \n", arrayScan);
+        printf("%d    ", enemy_locations[arrayScan].tile_X_position);
+        printf("%d    ", enemy_locations[arrayScan].x_displacement);
+        printf("%d    ", enemy_locations[arrayScan].y_position);
+        printf("%d    ", enemy_locations[arrayScan].sprite_number);
+        printf("%d    ", enemy_locations[arrayScan].movement);
+        printf("%d    ", enemy_locations[arrayScan].energy);
+        printf("%d    ", enemy_locations[arrayScan].param1);
+        printf("%d    ", enemy_locations[arrayScan].param2);
+        printf("\n");
+
+        arrayScan ++;
+	}
+}
+
+//seems to be working
+void orange ()
+{
+    unsigned char playerPosition = player.tile_X_position;
+
+    unsigned char windowLow = player.tile_X_position - 1;
+    unsigned char WinScan = windowLow;
+    unsigned char WinHigh = player.tile_X_position + NEAR_PLAYER;
+
+    unsigned char arrayScan = 0;
+    unsigned char playerLow = player.tile_X_position;
+	unsigned char playerHigh = player.tile_X_position + NEAR_PLAYER;
+	unsigned char baddyLocation;
 
 
-            if (temp2 == 255)//end of enemy list
+	if (WinHigh > MAX_PLAYER_POS)
+		WinHigh = MAX_PLAYER_POS;
+
+    baddyLocation  = enemy_locations[arrayScan].tile_X_position;
+
+    while (baddyLocation < windowLow)
+    {
+        arrayScan ++;
+        baddyLocation = enemy_locations[arrayScan].tile_X_position;
+    }
+
+    //no more than 6 entries
+    while (arrayScan <= WinHigh )
+	{
+		baddyLocation = enemy_locations[arrayScan].tile_X_position;
+
+		if(baddyLocation >= WinHigh)
+        {
+            //printf("GREATER THAN\n");
+            return;
+        }//seems working
+
+		if (baddyLocation == 0)
+		{
+		    //printf("NOT EXISTING\n");
+		    //temp1 ++;
+        }//to bypass deleted baddies
+
+
+		printf("arrayScan=%d   ", arrayScan);
+        printf("%d    ", enemy_locations[arrayScan].tile_X_position);
+        printf("%d    ", enemy_locations[arrayScan].x_displacement);
+        printf("%d    ", enemy_locations[arrayScan].y_position);
+        printf("%d    ", enemy_locations[arrayScan].sprite_number);
+        printf("%d    ", enemy_locations[arrayScan].movement);
+        printf("%d    ", enemy_locations[arrayScan].energy);
+        printf("%d    ", enemy_locations[arrayScan].param1);
+        printf("%d    ", enemy_locations[arrayScan].param2);
+        printf("\n");
+
+        arrayScan ++;
+	}
+
+}
+
+//working but native approach
+void banana ()//working but native approach
+{
+    unsigned char Win_scan = 0;
+    unsigned char Win_start = 0;
+    unsigned char Win_position = 0;
+    unsigned char Baddy_tile = 0;
+
+    //try not to go over 6-10 enemies at a time
+    //otherwise will get too slow
+    temp1 = window.windowLow;
+    temp2 = window.windowHigh;
+
+	if (temp2 > MAX_PLAYER_POS)
+		temp2 = MAX_PLAYER_POS;
+
+    printf (".windowLow = %d  .windowHigh = %d  .windowSize = %d\n", temp1, temp2, Win_scan );
+    printf("bannana\n");
+
+    for (Win_position = 0; Win_position < 255; Win_position ++)
+    {
+        for (Win_scan = Win_start; Win_scan < 255; Win_scan ++)
+        {
+            Baddy_tile = enemy_locations[Win_scan].tile_X_position;
+
+            if (Baddy_tile < temp1)//below
             {
-                //printf("FOUND END of baddies\n");
+                Win_start ++;
+                break;
+            }
+
+            if (Baddy_tile > temp2)//above
+            {
                 return;
             }
-            if (temp2 > windowHigh)//end of enemy list
+
+            //printf("Win_position= %d  Win_scan= %d Win_start= %d", Win_position,Win_scan,Win_start);
+
+            printf("Win_scan=%d   ", Win_scan);
+            printf("%d    ", enemy_locations[Win_scan].tile_X_position);
+            printf("%d    ", enemy_locations[Win_scan].x_displacement);
+            printf("%d    ", enemy_locations[Win_scan].y_position);
+            printf("%d    ", enemy_locations[Win_scan].sprite_number);
+            printf("%d    ", enemy_locations[Win_scan].movement);
+            printf("%d    ", enemy_locations[Win_scan].energy);
+            printf("%d    ", enemy_locations[Win_scan].param1);
+            printf("%d    ", enemy_locations[Win_scan].param2);
+            printf("\n");
+        }
+    }
+	printf("Ba Na Nuh\n");
+}
+
+
+/*printf("Win_scan = %d \n   ", Win_scan);
+		printf("%d    ", enemy_locations[Win_scan].tile_X_position);
+		printf("%d    ", enemy_locations[Win_scan].x_displacement);
+		printf("%d    ", enemy_locations[Win_scan].y_position);
+		printf("%d    ", enemy_locations[Win_scan].sprite_number);
+		printf("%d    ", enemy_locations[Win_scan].movement);
+		printf("%d    ", enemy_locations[Win_scan].energy);
+		printf("%d    ", enemy_locations[Win_scan].param1);
+		printf("%d    ", enemy_locations[Win_scan].param2);
+		printf("\n");*/
+
+
+void bananaWORKS ()
+{
+    //try not to go over 6-10 enemies at a time
+    //otherwise will get too slow
+    temp1 = window.windowLow;
+    temp2 = window.windowHigh;
+    temp3 = window.windowSize;
+	temp4 = window.windowMax;
+	temp8 = 0;//used to read tile position of baddy
+
+
+    unsigned char Win_scan = 0;
+    unsigned char Win_win = 0;
+	unsigned char Win_start = 0;
+
+	if (temp2 > MAX_PLAYER_POS)
+		temp2 = MAX_PLAYER_POS;
+
+    printf (".windowLow = %d  .windowHigh = %d  .windowSize = %d\n", temp1, temp2, temp3 );
+    printf("bannana\n");
+
+    for (Win_win = 0; Win_win < 255; Win_win ++)//for (Win_win = 0; Win_win < 15; Win_win ++)
+    {
+        for (Win_scan = Win_start; Win_scan < 255; Win_scan ++)
+        {
+            temp8 = enemy_locations[Win_scan].tile_X_position;
+
+            if (temp8 < temp1)//below
             {
-                //printf("TOP end of Range\n");
+                Win_start ++;
+                break;
+            }
+
+            if (temp8 > temp2)//above
+            {
                 return;
             }
-            //if (sliding_window == 15)
-            if (sliding_window >= windowHigh)//end of enemy range outside of window
-            {
-                //printf("END of window\n");
-                return;
-            }
 
-//            printf("arrayMembers= %d  baddy_tile_placement= %d\n", arrayMembers, baddy_tile_placement);
-//            printf("temp1= %d  sliding_window= %d  temp2=  [ %d ] \n", temp1, sliding_window, temp2);
+            //printf("Win_win= %d  Win_scan= %d Win_start= %d", Win_win,Win_scan,Win_start);
 
-            if (temp2 == 0)//enemy was destroyed
-            {
-                //printf("DEAD BADDY\n");
-                ++ sliding_window;
-            }
-
-            //if ((temp2 > 0) && (temp2 < 255))
-            if ((temp2 > windowLow) && (temp2 < windowHigh))//found an active baddy
-            {
-                //printf("MATCH and Copy\n");
-                copy_to_baddies(temp1);
-                ++ baddy_tile_placement;
-                ++ arrayMembers;
-            }
-
-
-
-            ++ sliding_window;
-
-        }//end for
-    }//end while
-    //printf("end while\n\n");
-    //printBaddyArray();
+            printf("Win_scan=%d   ", Win_scan);
+            printf("%d    ", enemy_locations[Win_scan].tile_X_position);
+            printf("%d    ", enemy_locations[Win_scan].x_displacement);
+            printf("%d    ", enemy_locations[Win_scan].y_position);
+            printf("%d    ", enemy_locations[Win_scan].sprite_number);
+            printf("%d    ", enemy_locations[Win_scan].movement);
+            printf("%d    ", enemy_locations[Win_scan].energy);
+            printf("%d    ", enemy_locations[Win_scan].param1);
+            printf("%d    ", enemy_locations[Win_scan].param2);
+            printf("\n");
+        }
+    }
+	printf("Ba Na Nuh\n");
 }
 
 
 
-
-
-
-
-//very close
-void search_enemy_array (void)
+void bannanaTest (unsigned char Win_low)
 {
-    //player must start at tile 1 or higher
-    temp1 = player.tile_X_position - 1;
-	temp2 = 0;//no more than 6 enemies at a time
+	temp2 = 0;//no more than 6 entries
 	temp3 = 0;
 
-	//player low should be player.tile_X_position + window size of some sort
+    unsigned char temp99;
+	//unsigned char Win_low = window.windowLow;//Low
+	unsigned char Win_high = Win_low + window.windowSize;//High
+	unsigned char Win_scan = Win_low;   //Win_low;
 
-	playerLow = player.tile_X_position;
-	playerHigh = player.tile_X_position + NEAR_PLAYER;
 
-	if (playerHigh > MAX_PLAYER_POS)
-		playerHigh = MAX_PLAYER_POS;
+	if (Win_high > MAX_PLAYER_POS)
+		Win_high = MAX_PLAYER_POS;
 
-    //while (temp2 < playerHigh )
-    //while (temp1 < playerHigh )nope
-	while (temp2 < playerHigh )
-	{
-		temp3 = enemy_locations[temp1].x_displacement;
+    printf ("Win_low = %d  Win_high = %d  .windowSize = %d\n", Win_low, Win_high, window.windowSize );
+    printf("bannana\n");
 
-		if(temp3 > playerHigh)
-		    return;
-        if (temp3 < playerLow)
-            temp1 ++;
+    //for (temp99 = Win_low; temp99 < Win_high; temp99 ++)//indexes wrong
+    for (temp99 = 0; temp99 < 240; temp99 ++)
+    {
+        temp3 = enemy_locations[temp99].tile_X_position;
+        printf("temp99 = %d   ", temp99);
+        printf("enemy_locations.tile_X_position = %d   ", temp3);
+        printf("\n");
 
-		if (temp3 == 0)
-		{	temp1 ++;}//to bypass deleted enemies
+        /*printf("temp99 = %d \n   ", temp99);
+		printf("%d    ", enemy_locations[temp99].tile_X_position);
+		printf("%d    ", enemy_locations[temp99].x_displacement);
+		printf("%d    ", enemy_locations[temp99].y_position);
+		printf("%d    ", enemy_locations[temp99].sprite_number);
+		printf("%d    ", enemy_locations[temp99].movement);
+		printf("%d    ", enemy_locations[temp99].energy);
+		printf("%d    ", enemy_locations[temp99].param1);
+		printf("%d    ", enemy_locations[temp99].param2);
+		printf("\n");*/
+    }
 
-		/*printf("\ntemp1 = %d", temp1);
-		printf("     temp2 = %d", temp2);
-		printf("     temp3 = %d", temp3);*/
-
-		printf("%d    ", enemy_locations[temp1].x_displacement);
-		printf("%d    ", enemy_locations[temp1].tile_X_position);
-		printf("%d    ", enemy_locations[temp1].y_position);
-		printf("%d    ", enemy_locations[temp1].sprite_number);
-		printf("%d    ", enemy_locations[temp1].movement);
-		printf("%d    ", enemy_locations[temp1].energy);
-		printf("%d    ", enemy_locations[temp1].param1);
-		printf("%d    ", enemy_locations[temp1].param2);
-		printf("\n");
-
-		//
-        //defb 01, 11, 10, 1, bob, 01, $aa, 00;0
-        //defb 02, 12, 20, 2, bob, 02, $aa, 01;1
-        //defb 03, 13, 30, 3, bob, 03, $aa, 02;2
-        //defb 04, 14, 40, 4, bob, 04, $aa, 03;3
-        //defb 05, 15, 50, 5, bob, 05, $aa, 04;4
-        //defb 05, 16, 60, 5, bob, 05, $aa, 05;5
-        //defb 06, 17, 70, 6, bob, 06, $aa, 06;6
-        //defb 07, 18, 80, 7, bob, 07, $aa, 07;7
-        //defb 08, 19, 90, 9, bob, 08, $aa, 08;8
-        //defb 09, 19, 99, 9, bob, 09, $fe, 09;9
-        ////////////////////////////////////////////////
-        //defb $ff, $ff, 80, 2, bob, 10, $ff, $ff
-        // dummy enemy, to mark the end
-
-		temp1 ++;//44046
-		//++ temp1;//44051
-
-		temp2 ++;//44046
-		//++ temp2;//44048
-	}
+	printf("Ba Na Nuh\n");
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//enemy_locations is large array
-void clean_enemy_array (void)
-{
-	for (temp1 = 0; temp1 < MAX_ENEMIES_ON_SCREEN; ++ temp1)
-	{
-		if (indexToDelete[temp1] != MAX_U_CHAR)
-		{
-			enemyToDelete = indexToDelete[temp1];
-
-			enemy_locations[enemyToDelete].x_displacement	= 0;
-			enemy_locations[enemyToDelete].tile_X_position = 0;
-			enemy_locations[enemyToDelete].y_position = 0;
-			enemy_locations[enemyToDelete].sprite_number = 0;
-			enemy_locations[enemyToDelete].movement = 0;
-			enemy_locations[enemyToDelete].energy = 0;
-			enemy_locations[enemyToDelete].param1 = 0;
-			enemy_locations[enemyToDelete].param2 = 0;
-		}
-	}
-}
-
-
-
 
 
 

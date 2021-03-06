@@ -1,7 +1,18 @@
+
+
 ;	mmap.inc
 
 SECTION UNCONTENDED_enemy_locations
 org 0xF800		;;//	63488
+
+
+
+
+
+
+
+
+
 
 
 

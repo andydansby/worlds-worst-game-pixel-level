@@ -17,9 +17,9 @@ rem zcc +zx -m  -startup=1 -clib=new objects.o @ramMAIN.lst -pragma-include:zpra
 rem --------------------------------
 
 @REM pause
-copy "output_CODE.bin" misc
-copy "output_UNASSIGNED.bin" misc
-copy "output_UNCONTENDED_enemy_locations.bin" misc
+copy "output_CODE.bin" compiler_files
+copy "output_UNASSIGNED.bin" compiler_files
+copy "output_UNCONTENDED_enemy_locations.bin" compiler_files
 move "output_CODE.bin" basic
 move "output_UNASSIGNED.bin" basic
 move "output_UNCONTENDED_enemy_locations.bin" basic
@@ -53,8 +53,8 @@ del "output_UNCONTENDED_enemy_locations.bin"
 cd ..
 
 
-move "objects.o" misc
-move "output.map" misc
-move "zcc_opt.def" misc
+move "objects.o" compiler_files
+move "output.map" compiler_files
+move "zcc_opt.def" compiler_files
 
 call beep.bat

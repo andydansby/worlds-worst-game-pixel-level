@@ -16,7 +16,7 @@
 
 #define UNSIGNED_CHAR_MAX 255
 #define MAX_U_CHAR 255
-#define MAX_PLAYER_POS 250
+#define MAX_PLAYER_POS 240
 //--------------------- MACROS
 
 
@@ -37,8 +37,6 @@
 
 #include "globalVariables.h"
 #include "functions.h"
-#include "obsolete.h"
-
 
 void Manual_test (void)
 {
@@ -136,23 +134,29 @@ void Manual_test (void)
 		temp4 = player.x_displacement;//lg
 
 
-		ioctl(1, IOCTL_OTERM_PAUSE, 0);//scrolls
+		//ioctl(1, IOCTL_OTERM_PAUSE, 0);//scrolls
+		ioctl(1, IOCTL_OTERM_PAUSE, 1);//scrolls
 
 		window.windowHigh = window.windowLow + window.windowSize;
 
 
 
         printf("??############################################################\n");
-        printf("Player at tile = %d -- map_x = %d -- Displacement = %d\n", temp2, intTemp1, temp4);
+        printf("Player at tile = %d -- map_x = %d -- Displacement = %d\n", player.tile_X_position, intTemp1, temp4);
         printf (".windowLow = %d  .windowHigh = %d  .windowSize = %d\n", window.windowLow, window.windowHigh, window.windowSize );
         printf("window.windowMax = %d   window.windowSize = %d\n", window.windowMax, window.windowSize);
         //printf("Player at tile = %d -- map_x = %d -- Displacement = %d\n", temp1, intTemp2, temp4);
         //printf("Player currently at tile = %d -- pixel = %d -- Displacement = %d\n", temp1, temp2, temp4);
         //printf("Player currently at tile = %d\n", player.tile_X_position);
-        printf("??############################################################\n");
+        printf("##############################################################\n");
 
-        search_window_for_baddies ();
-        printBaddyArray();
+
+        //banana();
+        //orange();//<<<<<<testing
+        apple();
+
+
+        //printBaddyArray();
 
         /*if (player.x_displacement < 15)
         {
@@ -169,9 +173,9 @@ void Manual_test (void)
 
 		if (player.x_displacement > 15)
         {
-            player.x_displacement = 0;
             player.tile_X_position ++;//increase the tile up to windowMax
             window.windowLow ++;
+            player.x_displacement = 0;
 
             printf("====================================================\n");
             printf("need to increase tile and reset offset to 0\n");
