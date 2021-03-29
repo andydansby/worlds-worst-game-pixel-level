@@ -16,10 +16,13 @@ Each tile is 16 pixels wide.
 Once you reach the end of the current tile (displacement == 15)
 you will advance to the next tile.
 
-You can only see 15 tiles ahead of you.
+You can only see 17 tiles ahead of you.
 
-Any enemy further than 15 tiles more more are invisible to you
+Any enemy further than 17 tiles more more are invisible to you
 Any enemy further than 1 tile behind you are invisible to you
 
-There are bugs to work out
+
+Now using binary search to find enemies closest to you.
+
+
 
