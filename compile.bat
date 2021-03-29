@@ -10,7 +10,13 @@ rem created are objects.o and zcc_opt.def
 
 @REM pause
 
-zcc +zx -m -v -startup=5 -clib=new objects.o @ramMAIN.lst -pragma-include:zpragma.inc  -o output
+rem this is a working compile string
+zcc +zx -m -v -startup=4 -clib=new objects.o @ramMAIN.lst -pragma-include:zpragma.inc  -o output
+rem zcc +zx -m -v -startup=5 -clib=new objects.o @ramMAIN.lst -pragma-include:zpragma.inc  -o output
+
+
+
+
 
 rem 32 column mode
 rem zcc +zx -m  -startup=1 -clib=new objects.o @ramMAIN.lst -pragma-include:zpragma.inc  -o output

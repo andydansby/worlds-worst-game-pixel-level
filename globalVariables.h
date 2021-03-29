@@ -13,23 +13,7 @@ struct Enemy
 	unsigned char energy;           // shields
 	unsigned char param1;           // Two parameters, to store some information that is entity-specific
 	unsigned char param2;           // Two parameters, to store some information that is entity-specific
-} enemy_locations[MAX_ENEMIES];
-
-//enemy_locations[xx].x_displacement
-
-
-struct baddy
-{
-    unsigned char tile_X_position;  // Tile in X
-    unsigned char x_displacement;   // Displacement in tile (0-23)
-	unsigned char y_position;       // Y position
-	unsigned char sprite_number;	// Number of the enemy sprite: if 0, this enemy is not active
-	unsigned char movement;         // movement type, from one of the predefined ones
-	unsigned char energy;           // shields
-	unsigned char param1;           // Two parameters, to store some information that is entity-specific
-	unsigned char param2;           // Two parameters, to store some information that is entity-specific
-} baddy[10];
-
+} enemy_locations[UNSIGNED_CHAR_MAX];
 
 struct player
 {
@@ -61,31 +45,15 @@ struct player
 	//which pixel in the MAP 0-4080 the ship is flying through
 }player;
 
-/*
-x_displacement = each tile has 24 pixels in it, this is used to show which of the 24 pixel the player sprite resides in
-tile_X_position =
-
-*/
-
-
-
-//player_x_desp_position        now     player.x_displacement
-//player_x_tile_position        now     player.tile_X_position
-//player_x_position             now     player.x_position
-
-
-unsigned char playerLow = 0;
-unsigned char playerHigh = 0;
-
-unsigned char playerStart = 0;
-
-
-
+//window struct should be in range of 1-255
+//left side runs 1-238
+//right side runs 17-255
+//window size is 17 (double tiles, 2 character spaces)
 struct window
 {
     unsigned char windowLow;
-    // far left side of window
-    //windowLow should not go over 235, otherwise you have to use INT
+    // far left side of window 1-238
+    //windowLow should not go over 238, otherwise you have to use INT
 
 	unsigned char windowHigh;
 	// far right side of window
@@ -95,52 +63,59 @@ struct window
 	//windowHigh - windowLow
 
 	unsigned char windowSize;
-	//size of the window = 15
+	//size of the window = 17
+
+	unsigned char windowScan;
+	//steps through the window
 }window;
 
 
+/////////// DEAD VARIABLES
+//unsigned char playerLow = 0;
+//unsigned char playerHigh = 0;
+//unsigned char start_enemy_array_slot_temp = 0;
+//unsigned char closest_baddy = 0;
+//unsigned char indexToDelete [MAX_ENEMIES_ON_SCREEN];
+//unsigned char number_of_index_baddies = 0;
+//static unsigned char y8 = 1;//used in randomizer can be any 8 bit number
+//unsigned char decision;
+//unsigned char enemyToDelete = 254;
+//unsigned int keypress;
 
+//unsigned char temp4 = 0;
+//unsigned char temp5 = 0;
+//unsigned char temp6 = 0;
+//unsigned char temp7 = 0;
 
-unsigned char indexToDelete [MAX_ENEMIES_ON_SCREEN];
-//--------------------------------------------------------------
+//unsigned int ms_start, ms_end, ms_diff = 0;
+//unsigned int clock_1 = 0;
+//unsigned int clock_2 = 0;
+//unsigned int clock_3 = 0;
+//unsigned int clock_4 = 0;
+/////////// DEAD VARIABLES
+
+unsigned char playerStart = 0;
 
 unsigned char temp1 = 0;
 unsigned char temp2 = 0;
 unsigned char temp3 = 0;
-unsigned char temp4 = 0;
-unsigned char temp5 = 0;
-unsigned char temp6 = 0;
-unsigned char temp7 = 0;
-unsigned char temp8 = 0;
 
 unsigned int intTemp1 = 0;
 unsigned int intTemp2 = 0;
-unsigned int intTemp3 = 0;
-unsigned int intTemp4 = 0;
-
-unsigned char number_of_index_baddies = 0;
-
-static unsigned char y8 = 1;//used in randomizer can be any 8 bit number
-
-unsigned char decision;
 
 unsigned char enemies_per_level = 0;
+unsigned char enemy_scan = 0;
 
-int ms_start, ms_end, ms_diff = 0;
-unsigned char clock_1 = 0;
-unsigned char clock_2 = 0;
-unsigned char clock_3 = 0;
-unsigned int clock_4 = 0;
+//-----------------------------------------------------------------------
+//used for binary search
+unsigned char output;
+unsigned char lo, hi, mid;
+unsigned char start_enemy_array_slot = 0;
 //-----------------------------------------------------------------------
 
 unsigned int pointerAddy;
-unsigned int keypress;
 
 unsigned int arrayInput[5];
-
-
-
-unsigned char enemyToDelete = 254;
 
 
 #endif
